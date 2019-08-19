@@ -27,7 +27,7 @@ class Board {
 }
 
 function DisplayBoard (PrintBoard, message){
-  console.clear
+  console.clear()
   console.log (" ") 
   console.log ("Tic Tac Toe Version 3.0 ") 
   console.log (" ")  

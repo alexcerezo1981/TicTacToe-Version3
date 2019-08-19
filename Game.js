@@ -4,6 +4,8 @@
 const Messages = require('./Messages')
 const NewBoard = require('./board');
 
+var EndOfGame =false
+
 class Game {
   constructor(playerOne, playerTwo) {
     this.board = new NewBoard(playerOne);
@@ -18,42 +20,10 @@ class Game {
     process.stdin.setRawMode(true);                                                             // Raw mode gets rid of standard keypress events and other functionality Node.js adds by default
 
     process.stdin.on('keypress', (str, key) => {
-      let EndOfGame
-      let CorrectKey  
-      let message
-      let NewMessage
-     
-      EndOfGame = Messages.UserExit(key.sequence)                                               // If user press E the game ends
+      var DisplayMessage = this.ProcessEveryTurn(key.sequence)
+      NewBoard.DisplayBoard(this.board.grid,DisplayMessage) 
       if (EndOfGame===true)
-        process.exit();
-      else{
-        CorrectKey = Messages.CorrectKeyPressed(key.sequence)                                   // Check if the pressed key is one of the avialables on the game
-        if (CorrectKey===true){
-          if (this.board.grid[key.sequence-1]==="X" || this.board.grid[key.sequence-1]==="O")   // Check if a player is already using that box
-            console.log("This box is already in use, please press another one")
-          else{
-            
-            this.board.grid[key.sequence-1]= this.activePlayer                             // Check the box on our array to be able to display it later on
-            NewMessage=Messages.Winner(this.board.grid)                                                                                                                                                                            
-            if (NewMessage==="Win"){
-              message = "Player " + this.activePlayer + " wins the game!!!"
-              NewBoard.DisplayBoard(this.board.grid,message)   
-              process.exit();
-            }else {
-              NewMessage=this.isOver() 
-              if (NewMessage==="due"){
-              message = "This game ends on draw!"
-              NewBoard.DisplayBoard(this.board.grid,message)   
-              process.exit();
-              }else{
-                this.alternatePlayer()
-                message = "It's the turn for " + this.activePlayer + ". Press one of the numbers avialable (Press 'e' for Exit)"
-                NewBoard.DisplayBoard(this.board.grid,message)   
-              } 
-            }                                  
-          }
-        }
-      }
+        process.exit();    
     })
   }
 
@@ -66,6 +36,46 @@ class Game {
   isOver() {
     let x= this.board.isDraw(this.board.grid);
     return x
+  }
+
+  ProcessEveryTurn(key){
+    
+    let CorrectKey  
+    let message
+    let NewMessage
+     
+    EndOfGame = Messages.UserExit(key)                                               
+    if (EndOfGame===true){
+      EndOfGame = true
+      message = "You exited the game"    
+      }else{
+        CorrectKey = Messages.CorrectKeyPressed(key)                                 
+        if (CorrectKey===true){
+          if (this.board.grid[key-1]==="X" || this.board.grid[key-1]==="O"){   
+            message = "It's the turn for " + this.activePlayer + ". Press one of the numbers avialable (Press 'e' for Exit). This box is already in use, please select another one"  
+          }else{
+            this.board.grid[key-1]= this.activePlayer                             
+            NewMessage=Messages.Winner(this.board.grid) 
+            if (NewMessage==="Win"){
+              EndOfGame = true
+              message = "Player " + this.activePlayer + " wins the game!!!"   
+            }else {
+              NewMessage=this.isOver() 
+              if (NewMessage==="due"){
+                EndOfGame = true 
+                message = "This game ends on draw!" 
+              }else{
+                this.alternatePlayer()
+                message = "It's the turn for " + this.activePlayer + ". Press one of the numbers avialable (Press 'e' for Exit)" 
+              } 
+            }                                  
+          }
+        }
+      else{
+        message = "The pressed key is not in the game, please press the number of one of the avialable boxes"   
+      }
+    }
+    return message
   }
 }
 

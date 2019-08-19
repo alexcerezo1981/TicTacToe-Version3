@@ -25,7 +25,6 @@ function CorrectKeyPressed(key){
         if (key ===x.toString ())
             return true
     }
-    console.log ("The pressed key is not int the game, please press the number of one of the avialable boxes")
     return false
 }
 
@@ -36,6 +35,7 @@ function Winner(BoardGame){
             return "Win" 
         x=x+1
     }while (x<8)
+    return ""
 }
 
 
