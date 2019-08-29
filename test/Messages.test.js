@@ -3,7 +3,7 @@ var expect = require ('chai').expect
 
 const Messages = require('../Messages');
 
-describe('Messages', () => {
+xdescribe('Messages', () => {
 
     it('User wants to exit the game', () => {
         let key1="e"

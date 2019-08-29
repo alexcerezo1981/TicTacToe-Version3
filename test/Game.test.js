@@ -3,7 +3,7 @@ var expect = require ('chai').expect
 
 const Game = require('../game');
 
-describe('Game', () => {
+xdescribe('Game', () => {
 
   it('Create a new Game', () => {
     

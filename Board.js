@@ -1,32 +1,32 @@
-//@format
+
 
 class Board {
-  constructor(playerOne) {
-    let message ="It's the turn for " + playerOne + ". Press one of the numbers avialable (Press 'e' for Exit)"
-    this.grid = this.makeGrid();
-    DisplayBoard(this.grid, message)
+  constructor(NumberOfBoxes) {
+    this.N_Boxes = NumberOfBoxes
+    this.grid = this.makeGrid(NumberOfBoxes)
   }
 
-  makeGrid() {
-    let grid = new Array(9);
-    for (let x=1; x<10; x++){
-      grid[x-1]=x
-      }
+  makeGrid(NumberOfBoxes) {
+    let grid = new Array(NumberOfBoxes)
+
+    for (let x=1; x<NumberOfBoxes+1; x++)
+        grid[x-1]=x
     return grid
   }
 
-  isDraw(boxes) {
-    for (let x =0;x<9;x++){
-      if (boxes[x]===x+1)
-        return ""
-    }
-    return "due"
-  }
+//   isDraw(boxes) {
+//     for (let x =0;x<9;x++){
+//       if (boxes[x]===x+1)
+//        return ""
+//    }
+//    return "due"
+//  }
 
   
 }
 
-function DisplayBoard (PrintBoard, message){
+function DisplayBoard (PrintBoard){
+  
   console.clear()
   console.log (" ") 
   console.log ("Tic Tac Toe Version 3.0 ") 
@@ -37,8 +37,6 @@ function DisplayBoard (PrintBoard, message){
         x=x+3
   }
   console.log ("-------------")
-  console.log (" ") 
-  console.log (message)
   console.log (" ") 
 }
 
