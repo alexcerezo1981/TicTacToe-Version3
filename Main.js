@@ -33,11 +33,25 @@ function PlayAllGames(){
             console.log ("You exited the game")                                   
             process.exit()
         }   
-        if (KeyPressed_Functions.ValidKey(key.sequence,NewBoard.N_Boxes)){                      // Check if player pressed an invalid key
-            NewBoard.grid[0]="X"                         ///////////////////////////////////////////////////////////////    ///////////////////////////////////////////////////////////////
-            console.log (NewBoard.grid)                                                             
+        if (KeyPressed_Functions.ValidKey(key.sequence,NewBoard.N_Boxes)){                      // Check if player pressed an valid key                                                           
             if (KeyPressed_Functions.NotInUse(key.sequence,NewBoard.grid)){                     // Check if the box is already in use
-                console.log ("Esta Libre")
+                NewBoard.grid [key.sequence-1]=NameActivePlayer                                 // Update the board and display it
+                Board.DisplayBoard (NewBoard.grid)
+
+                if (KeyPressed_Functions.Winner(NewBoard.grid)){                                // Checking if we have a winner
+                    console.log ("Player " + NameActivePlayer + " wins the game!!!")
+                    process.exit()
+                }else if (KeyPressed_Functions.Draw(NewBoard.grid,NewBoard.N_Boxes)){            // Check if we have a draw game         
+                    console.log ("This game ends on draw!")
+                    process.exit()
+                } 
+                else{
+                    ActivePlayer = Players.UpdatePlayer(ActivePlayer,NumberOfPlayers)           // Change the active player and display it
+                    NameActivePlayer = Player.name[ActivePlayer]
+                    console.log("It's the turn for player " + NameActivePlayer + ". Press one of the numbers avialable (Press 'e' for Exit)")
+                }                                     
+
+
             }else{
                 console.log ("This box is already in use, please select another one")
             }
@@ -52,16 +66,3 @@ function PlayAllGames(){
 
 InitialiceTheGame()
 PlayAllGames()
-
-
-//console.log(NameActivePlayer)
-
-
-
-
-
-
-// Create a New Game
-// const NewGame = new Game("X","O");
-//NewGame.playAllTurns()
-

@@ -13,16 +13,6 @@ class Board {
         grid[x-1]=x
     return grid
   }
-
-//   isDraw(boxes) {
-//     for (let x =0;x<9;x++){
-//       if (boxes[x]===x+1)
-//        return ""
-//    }
-//    return "due"
-//  }
-
-  
 }
 
 function DisplayBoard (PrintBoard){
@@ -41,6 +31,6 @@ function DisplayBoard (PrintBoard){
 }
 
 
-module.exports = Board;
-module.exports.DisplayBoard=DisplayBoard;
+module.exports = Board
+module.exports.DisplayBoard=DisplayBoard
 
