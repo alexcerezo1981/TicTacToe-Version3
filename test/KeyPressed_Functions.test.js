@@ -34,15 +34,15 @@ describe('EndGameFunctions', () => {
 
     it('Player selected a Box ALREADY in use', () => {
       let PressedKey= "1"
-      let Board = ['X',2,3,4,5,6,7,8,9]
-      let InUse = EndGameFunctions.NotInUse(PressedKey,Board)
+      let CellSelected = "X"
+      let InUse = EndGameFunctions.NotInUse(PressedKey,CellSelected)
       expect(InUse).to.eql(false)   
     });
 
     it('Player selected a Box NOT in use', () => {
       let PressedKey= "2"
-      let Board = ['X',2,3,4,5,6,7,8,9]
-      let InUse = EndGameFunctions.NotInUse(PressedKey,Board)
+      let CellSelected = "2"
+      let InUse = EndGameFunctions.NotInUse(PressedKey,CellSelected)
       expect(InUse).to.eql(true)   
     });
 

@@ -19,8 +19,8 @@ function ValidKey(PressedKey,NumberOfBoxes){
     return control
 }
 
-function NotInUse(PressedKey,Board){
-    if (Board[PressedKey-1].toString()===PressedKey.toString())
+function NotInUse(PressedKey,valueOnBoard){
+    if (PressedKey.toString()===valueOnBoard)
         return true
     else
         return false  

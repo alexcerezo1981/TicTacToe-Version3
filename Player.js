@@ -1,8 +1,9 @@
 
 class Players {
-    constructor(Nplayers, PlayerNames) {
+    constructor(Nplayers, PlayerNames, whoPlays) {
       this.numberOfPlayers = Nplayers
       this.name = PlayerNames      
+      this.humanPC = whoPlays
     }
 }
 
