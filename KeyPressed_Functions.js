@@ -1,17 +1,17 @@
-function EndOfGame(PressedKey){
-    if(PressedKey === "E" || PressedKey === "e"){
+function EndOfGame(pressedKey){
+    if(pressedKey === "E" || pressedKey === "e"){
         return true
     }
-    else
+    else{
         return false
-
+    }
 }
 
 
-function ValidKey(PressedKey,NumberOfBoxes){
+function ValidKey(pressedKey,nuBoxes){
     let control = false
-    for (let x=1; x<NumberOfBoxes+1; x++){
-        if (x.toString()===PressedKey.toString()){
+    for (let x=1; x<nuBoxes+1; x++){
+        if (x.toString()===pressedKey.toString()){
             control = true
             break
         }
@@ -19,14 +19,14 @@ function ValidKey(PressedKey,NumberOfBoxes){
     return control
 }
 
-function NotInUse(PressedKey,valueOnBoard){
-    if (PressedKey.toString()===valueOnBoard)
+function NotInUse(pressedKey,valueOnBoard){
+    if (pressedKey.toString()===valueOnBoard)
         return true
     else
         return false  
 }
 
-function Winner(Board){
+function Winner(activeBoard){
 
     let Winner_Combination = [       ///All possible combinations to win
         [0,1,2],
@@ -41,23 +41,23 @@ function Winner(Board){
     let x=0
 
     do{
-        if((Board[Winner_Combination [x] [0]] === Board[Winner_Combination [x] [1]]) && (Board[Winner_Combination [x] [1]] === Board[Winner_Combination [x] [2]]))
+        if((activeBoard[Winner_Combination [x] [0]] === activeBoard[Winner_Combination [x] [1]]) && (activeBoard[Winner_Combination [x] [1]] === activeBoard[Winner_Combination [x] [2]]))
             return true 
         x=x+1
     }while (x<8)
     return false
 }
 
-function Draw(Board,N_Boxes){
+function Draw(activeBoard){
     let x =0
     do {
-        if (Board[x] === x+1){
+        if (activeBoard[x] === x+1){
             return false
         }
         else{
             x++
         }
-    }while (x<N_Boxes)
+    }while (x<activeBoard.length)
     return true
 }
 

@@ -1,6 +1,6 @@
    
    
-function initialize(key){   
+function IntialMenu(key){   
     
     if (key==="1"){
         console.log ("Human V Human") 
@@ -21,4 +21,4 @@ function initialize(key){
 }
 
 
-module.exports.initialize=initialize;
+module.exports.IntialMenu=IntialMenu;
