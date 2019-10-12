@@ -102,10 +102,18 @@ function PlayAllGames(){
                 }
             }
             if (newPlayer.humanPC[activePlayer]==="PC"){
-                
+                console.log ("Entra Aqui")
                 var layer =0
                 var PCplayer=["PC", newPlayer.namePlayers[activePlayer]]
-                newBoard.grid [PC.miniMax(newBoard.grid,PCplayer,layer)]=newPlayer.namePlayers[activePlayer]    // Update the board and display it
+                var A = PC.miniMax(newBoard.grid,PCplayer,layer).index
+                console.log ("A-----> " + A)
+                console.log(newBoard.grid)
+                console.log(PCplayer)
+                console.log(layer)
+                console.log(newPlayer.namePlayers[activePlayer])
+                newBoard.grid [A]=newPlayer.namePlayers[activePlayer]    // Update the board and display it
+                console.log ("Entra Aqui 2")
+                console.log (newBoard.grid )
                 winnerDraw(newBoard.grid,newPlayer.namePlayers[activePlayer])                                   // Check if we have a winner or it's draw
                 activePlayer = Player.UpdatePlayer(activePlayer,newPlayer.numberOfPlayers)                      // Change the active player and display it
 
@@ -119,6 +127,7 @@ function PlayAllGames(){
                 firstMenu=false
                 InitialiceTheGame(selectedOption)
             }
+            activePlayer=0
         }
     })
 }

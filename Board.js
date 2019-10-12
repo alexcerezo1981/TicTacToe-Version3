@@ -8,8 +8,6 @@ class Board {
 
   makeGrid(nuBoxes) {
     let grid = new Array(nuBoxes)
-
-    //grid = ["X", "X", "O", "O", "X", "O","X", 8, 9]          /////////////////////////////PARA BORRAR///////////////////
     for (let x=1; x<nuBoxes+1; x++)
         grid[x-1]=x
     return grid
@@ -18,7 +16,7 @@ class Board {
 
 function DisplayBoard (newBoard){
   
-  console.clear()
+  //console.clear()
   console.log (" ") 
   console.log ("Tic Tac Toe Version 3.0 ") 
   console.log (" ")  
@@ -42,6 +40,7 @@ function findEmptySpace (emptyBoxes){
 
       return value !=="O" 
     })
+    console.log ("Espacios vacios: " + withOutO)
     return withOutO
   }
 
