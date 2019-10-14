@@ -3,7 +3,6 @@
 const Board = require('./Board');
 const Player = require('./Player');
 const KeyPressed_Functions = require('./KeyPressed_Functions');
-const GameMenu = require('./GameMenu');
 const PC = require('./PC');
 
 
@@ -63,8 +62,7 @@ function PlayAllGames(){
     readline.emitKeypressEvents(process.stdin);                                                 // Allows us to listen for events from stdin
     process.stdin.setRawMode(true);                                                             // Raw mode gets rid of standard keypress events and other functionality Node.js adds by default
     
-    firstMenu=true                                                                              // Variable to controll if the game was initialize
-
+                                                                                 // Variable to controll if the game was initialize
 
     console.clear()                                                                             // Menu to select who is going to play
     console.log (" ") 
@@ -87,8 +85,11 @@ function PlayAllGames(){
                 }   
                 if (KeyPressed_Functions.ValidKey(key.sequence,newBoard.numberOfBoxes)){                            // Check if player pressed an valid key                                                           
                     if (KeyPressed_Functions.NotInUse(key.sequence,newBoard.grid[key.sequence-1].toString())){      // Check if the box is already in use
-                        
-                        newBoard.grid [key.sequence-1]=newPlayer.namePlayers[activePlayer]                          // Update the board and display it
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        newBoard.grid =["X",2,"O","O",5,"O",7,"X","X"]
+                        //newBoard.grid [key.sequence-1]=newPlayer.namePlayers[activePlayer]                          // Update the board and display it
                         winnerDraw(newBoard.grid,newPlayer.namePlayers[activePlayer])                               // Check if we have a winner or it's draw
                         activePlayer = Player.UpdatePlayer(activePlayer,newPlayer.numberOfPlayers)                  // Change the active player and display it
  
@@ -101,19 +102,24 @@ function PlayAllGames(){
                     console.log ("The pressed key is not in the game, please press the number of one of the avialable boxes")     
                 }
             }
+
             if (newPlayer.humanPC[activePlayer]==="PC"){
-                console.log ("Entra Aqui")
-                var layer =0
+                
+                var layer=0
                 var PCplayer=["PC", newPlayer.namePlayers[activePlayer]]
-                var A = PC.miniMax(newBoard.grid,PCplayer,layer).index
-                console.log ("A-----> " + A)
-                console.log(newBoard.grid)
-                console.log(PCplayer)
-                console.log(layer)
-                console.log(newPlayer.namePlayers[activePlayer])
-                newBoard.grid [A]=newPlayer.namePlayers[activePlayer]    // Update the board and display it
-                console.log ("Entra Aqui 2")
-                console.log (newBoard.grid )
+                
+                console.log (newBoard.grid)
+                console.log (PCplayer)
+                console.log (layer)
+                console.log ("----------------------------EMPIEZA MINIMAX---------------------------------------")
+                var A = PC.miniMax(newBoard.grid,PCplayer, layer,maximizing=true).index
+                process.exit()
+                console.log ("Esto es el resultado del Minimax: " + A)
+                console.log ("Esto es ANTES de hacer el update del minimax ")
+                console.log (newBoard.grid)
+                newBoard.grid [A-1]=newPlayer.namePlayers[activePlayer]    // Update the board and display it
+                console.log ("Esto es despues de hacer el update del minimax ")
+                console.log (newBoard.grid)
                 winnerDraw(newBoard.grid,newPlayer.namePlayers[activePlayer])                                   // Check if we have a winner or it's draw
                 activePlayer = Player.UpdatePlayer(activePlayer,newPlayer.numberOfPlayers)                      // Change the active player and display it
 
@@ -122,19 +128,21 @@ function PlayAllGames(){
         }        
         
         if (firstMenu===true){
-            selectedOption=GameMenu.IntialMenu(key.sequence)
+            selectedOption=key.sequence.toString()
             if (selectedOption==="1" || selectedOption==="2" || selectedOption==="3"){
                 firstMenu=false
                 InitialiceTheGame(selectedOption)
+                activePlayer=0
             }
-            activePlayer=0
+            
+            
         }
     })
 }
 
 
 
-
+var firstMenu=true 
 PlayAllGames()
 
 module.exports.winnerDraw=winnerDraw

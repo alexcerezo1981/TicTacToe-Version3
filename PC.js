@@ -1,120 +1,21 @@
 const Main = require('./Main');
 const KeyPressed_Functions = require('./KeyPressed_Functions');
-
 const Board = require('./board');
 
-/*function miniMax(newBoard,player,layer){
-    
-    var emptyBoxes = Board.findEmptySpace(newBoard)                                           // Find the empty boxes
 
-    if (layer===12){
-        process.exit()
-    }
-
-    if ((KeyPressed_Functions.Winner(newBoard)) && (player[0] === "Human")){                      // Check if Human Wins
-        return {score: -10}
-    } else if ((KeyPressed_Functions.Winner(newBoard)) && (player[0] === "PC")){                  // Check if PC Wins
-        return {score: 10}
-    } else if (emptyBoxes.length === 0){                                                      // Check if game us Draw
-        return {score: 0}
-    }
-
-    var movesToEvaluete = []
-
-    for (var i =0; i < emptyBoxes.length; i++){
-        var movement = {}
-        movement.index = emptyBoxes[i]
-        newBoard[emptyBoxes[i]-1]= player [1]
-
-        layer = layer + 1
-        if (player[0]==="PC"){
-            player[0]="Human"
-            if (player[1]==="X"){
-                player[1]="O"
-            }else {
-                player[1]="X"
-            }
-            var result = miniMax(newBoard,player,layer)
-            movement.score = result.score
-        } else {
-            player[0]="PC"
-            if (player[1]==="X"){
-                player[1]="O"
-            }else {
-                player[1]="X"
-            }
-            var result = miniMax(newBoard,player,layer)
-            movement.score = result.score
-            
-        }
-
-        newBoard[emptyBoxes[i]-1] = movement.index
+function miniMax(newBoard,player,layer,maximizing){
   
-        movesToEvaluete.push(movement)
-    }
+  if (layer===0){
+    nodes_map = new Map()
+  }
 
-    var bestOption
-    if (player[0] === "PC"){
-        var bestScore = -10000
-        for (var i=0; i < movesToEvaluete.length; i++){
-            if (movesToEvaluete[i] > bestScore){
-                bestScore = movesToEvaluete[i].score
-                console.log ("              bestScore: " + bestScore + " - LAYER: " + layer)
-                bestOption=i
-                console.log ("                  bestOption: " + bestOption + " - LAYER: " + layer)
-            }
-        }
-    } else {
-        var bestScore = 10000
-        for (var i=0; i < movesToEvaluete.length; i++){
-            if (movesToEvaluete[i] < bestScore){
-                bestScore = movesToEvaluete[i].score
-                console.log ("              bestScore: " + bestScore + " - LAYER: " + layer)
-                bestOption=i
-                console.log ("                  bestOption: " + bestOption + " - LAYER: " + layer)
-            }
-        }
+  // Check if we have a winner
+  if (KeyPressed_Functions.Winner(newBoard)){
+    if (player[0] === "Human"){
 
-    }
-}*/
 
-function miniMax(newBoard,player,layer){
-
-  
-    //available spots
-    var availSpots = Board.findEmptySpace(newBoard) 
-
-  
-    if (layer===12){
-        process.exit()
-    }
-  
-    // checks for the terminal states such as win, lose, and tie and returning a value accordingly
-    if ((KeyPressed_Functions.Winner(newBoard)) && (player[0] === "Human")){
-       return {score:-10}
-    }
-      else if ((KeyPressed_Functions.Winner(newBoard)) && (player[0] === "PC")){
-      return {score:10}
-      }
-    else if (availSpots.length === 0){
-        return {score:0}
-    }
-  
-  // an array to collect all the objects
-    var moves = [];
-  
-    // loop through available spots
-    for (var i = 0; i < availSpots.length; i++){
-      //create an object for each and store the index of that spot that was stored as a number in the object's index key
-      var move = {};
-        move.index = newBoard[availSpots[i]-1];
-  
-      // set the empty spot to the current player
-      newBoard[availSpots[i]-1] = player[1];
-
-      layer++
-  
-      //if collect the score resulted from calling minimax on the opponent of the current player
+      
+      console.log (newBoard)
       if (player[0]==="PC"){
         player[0]="Human"
         if (player[1]==="X"){
@@ -122,54 +23,231 @@ function miniMax(newBoard,player,layer){
         }else {
             player[1]="X"
         }
-        var result = miniMax(newBoard,player,layer)
-        move.score = result.score;
-      }
-      else {
+      }else {
         player[0]="PC"
+        if (player[1]==="X"){
+          player[1]="O"
+        }else {
+          player[1]="X"
+        }
+      }
+
+
+      return 100-layer
+    } else if (player[0] === "PC"){
+
+
+
+      console.log (newBoard)
+      if (player[0]==="PC"){
+        player[0]="Human"
         if (player[1]==="X"){
             player[1]="O"
         }else {
             player[1]="X"
         }
-        var result = miniMax(newBoard,player,layer)
-        move.score = result.score;
+      }else {
+        player[0]="PC"
+        if (player[1]==="X"){
+          player[1]="O"
+        }else {
+          player[1]="X"
+        }
       }
+      
+      return -100+layer
+    }
 
-      //reset the spot to empty
-      newBoard[availSpots[i]] = move.index;
-  
-      // push the object to the array
-      moves.push(move);
-    }
-  
-  // if it is the computer's turn loop over the moves and choose the move with the highest score
-    var bestMove;
-    if(player[0]==="PC"){
-      var bestScore = -10000;
-      for(var i = 0; i < moves.length; i++){
-        if(moves[i].score > bestScore){
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
+
+
+    console.log (newBoard)
+    if (player[0]==="PC"){
+      player[0]="Human"
+      if (player[1]==="X"){
+          player[1]="O"
+      }else {
+          player[1]="X"
       }
-    }else{
-  
-  // else loop over the moves and choose the move with the lowest score
-      var bestScore = 10000;
-      for(var i = 0; i < moves.length; i++){
-        if(moves[i].score < bestScore){
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
+    }else {
+      player[0]="PC"
+      if (player[1]==="X"){
+        player[1]="O"
+      }else {
+        player[1]="X"
       }
     }
-  
-  // return the chosen move (object) from the array to the higher depth
-  console.log ("Bestmove: " + bestMove)
-  console.log (moves)
-    return moves[bestMove];
+    
+    
+    return 0
   }
 
+  if (maximizing)
+  {
+    console.log("maximizing")
+    console.log("**************")
+    console.log("")
+    //Initializ best to the lowest possible value
+    let best = -100
+
+    //Loop through all empty cells
+    var availSpots= Board.findEmptySpace(newBoard)
+    for (var i = 0; i < availSpots.length; i++){
+
+        
+      //Initialize a new board with the current state (slice() is used to create a new array and not modify the original)
+        
+      let childBoard=newBoard.slice()
+      console.log (newBoard)
+        
+      //Create a child node by inserting the maximizing symbol x into the current emoty cell
+      childBoard[availSpots[i]-1] = player[1]
+      console.log (childBoard)
+        
+      //Recursively calling getBestMove this time with the new board and minimizing turn and incrementing the depth
+      layer++
+
+      if (player[0]==="PC"){
+        player[0]="Human"
+        if (player[1]==="X"){
+            player[1]="O"
+        }else {
+            player[1]="X"
+        }
+      }else {
+        player[0]="PC"
+        if (player[1]==="X"){
+          player[1]="O"
+        }else {
+          player[1]="X"
+        }
+      }
+
+      let node_value = this.miniMax(childBoard, player, layer, false)
+      layer--
+      console.log ("node_value: " + node_value)
+
+      //Updating best value
+      best = Math.max(best, node_value);
+      console.log ("Best " + best)
+        
+
+      //If it's the main function call, not a recursive one, map each heuristic value with it's moves indicies
+      if(layer === 0) {
+        //Comma seperated indicies if multiple moves have the same heuristic value
+        
+        console.log("node_value " + node_value)
+        console.log ("nodes_map ")
+        console.log (nodes_map)
+          
+
+        var moves
+        if(nodes_map.has(node_value)){
+          moves =`${nodes_map.get(node_value)},${availSpots[i]}` 
+        }else{
+          moves =availSpots[i]
+        }
+        nodes_map.set(node_value, moves);
+        console.log ("Last nodes_map ")
+        console.log (nodes_map)
+
+      }
+    }
+    
+    //If it's the main call, return the index of the best move or a random index if multiple indicies have the same value
+    if(layer === 0) {
+      best=nodes_map.get(best)
+      console.log ("Value to return of the variable best")
+      console.log(best)
+      }
+      
+      //If not main call (recursive) return the heuristic value for next calculation
+      return best;
+    }
+
+    if(!maximizing)
+    {
+      console.log("MINImizing")
+      console.log("**************")
+      console.log("")
+
+    //Initializ best to the lowest possible value
+    let best = 100
+
+    //Loop through all empty cells
+    var availSpots= Board.findEmptySpace(newBoard)
+    for (var i = 0; i < availSpots.length; i++){
+
+        
+      //Initialize a new board with the current state (slice() is used to create a new array and not modify the original)
+        
+      let childBoard=newBoard.slice()
+      console.log (newBoard)
+        
+      //Create a child node by inserting the maximizing symbol x into the current emoty cell
+      childBoard[availSpots[i]-1] = player[1]
+      console.log (childBoard)
+        
+      //Recursively calling getBestMove this time with the new board and minimizing turn and incrementing the depth
+      layer++
+
+      if (player[0]==="PC"){
+        player[0]="Human"
+        if (player[1]==="X"){
+            player[1]="O"
+        }else {
+            player[1]="X"
+        }
+      }else {
+        player[0]="PC"
+        if (player[1]==="X"){
+          player[1]="O"
+        }else {
+          player[1]="X"
+        }
+      }
+
+      let node_value = this.miniMax(childBoard, player, layer, true)
+      layer--
+      console.log ("node_value: " + node_value)
+
+      //Updating best value
+      best = Math.min(best, node_value);
+      console.log ("Best " + best)
+        
+
+      //If it's the main function call, not a recursive one, map each heuristic value with it's moves indicies
+      if(layer === 0) {
+        //Comma seperated indicies if multiple moves have the same heuristic value
+        
+        console.log("node_value " + node_value)
+        console.log ("nodes_map ")
+        console.log (nodes_map)
+          
+
+        var moves
+        if(nodes_map.has(node_value)){
+          moves =`${nodes_map.get(node_value)},${availSpots[i]}` 
+        }else{
+          moves =availSpots[i]
+        }
+        nodes_map.set(node_value, moves);
+        console.log ("Last nodes_map ")
+        console.log (nodes_map)
+
+      }
+    }
+    
+    //If it's the main call, return the index of the best move or a random index if multiple indicies have the same value
+    if(layer === 0) {
+      best=nodes_map.get(best)
+      console.log ("Value to return of the variable best")
+      console.log(best)
+      }
+      
+      //If not main call (recursive) return the heuristic value for next calculation
+      return best;
+    }
+  
+}
 
 module.exports.miniMax=miniMax

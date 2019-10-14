@@ -40,7 +40,6 @@ function findEmptySpace (emptyBoxes){
 
       return value !=="O" 
     })
-    console.log ("Espacios vacios: " + withOutO)
     return withOutO
   }
 
