@@ -1,29 +1,17 @@
 function EndOfGame(pressedKey){
-    if(pressedKey === "E" || pressedKey === "e"){
-        return true
-    }
-    else{
-        return false
-    }
-}
-
-
-function ValidKey(pressedKey,nuBoxes){
-    let control = false
-    for (let x=1; x<nuBoxes+1; x++){
-        if (x.toString()===pressedKey.toString()){
-            control = true
-            break
-        }
-    }
-    return control
-}
-
-function NotInUse(pressedKey,valueOnBoard){
-    if (pressedKey.toString()===valueOnBoard)
+    if(pressedKey === "E" || pressedKey === "e")
         return true
     else
-        return false  
+        return false
+}
+
+function ValidKey(pressedKey,nuBoxes){
+    for (let x=0; x<nuBoxes; x++){
+        if (x.toString()===pressedKey.toString()){
+            return true
+        }
+    }
+    return false
 }
 
 function Winner(activeBoard){
@@ -51,19 +39,15 @@ function Winner(activeBoard){
 function Draw(activeBoard){
     let x =0
     do {
-        if (activeBoard[x] === x+1){
+        if (activeBoard[x] === x)
             return false
-        }
-        else{
+        else
             x++
-        }
     }while (x<activeBoard.length)
     return true
 }
 
 
-
-module.exports.NotInUse=NotInUse;
 module.exports.EndOfGame=EndOfGame;
 module.exports.ValidKey=ValidKey;
 module.exports.Winner=Winner;

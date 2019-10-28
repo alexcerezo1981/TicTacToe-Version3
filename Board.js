@@ -8,15 +8,15 @@ class Board {
 
   makeGrid(nuBoxes) {
     let grid = new Array(nuBoxes)
-    for (let x=1; x<nuBoxes+1; x++)
-        grid[x-1]=x
+    for (let x=0; x<nuBoxes; x++)
+        grid[x]=x
     return grid
   }
 }
 
 function DisplayBoard (newBoard){
   
-  //console.clear()
+  console.clear()
   console.log (" ") 
   console.log ("Tic Tac Toe Version 3.0 ") 
   console.log (" ")  

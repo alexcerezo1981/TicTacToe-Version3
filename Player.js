@@ -1,20 +1,9 @@
 
 class Players {
-    constructor(nuplayer, naPlayer, huPC) {
-      this.numberOfPlayers = nuplayer
-      this.namePlayers = naPlayer      
-      this.humanPC = huPC
+    constructor(playerX, playerO) {
+      this.player1 = playerX
+      this.player2 = playerO      
     }
 }
 
-function UpdatePlayer(activePlayer,nuPlayers){
-  
-  activePlayer=activePlayer + 1
-  if (activePlayer > nuPlayers - 1)
-      return 0
-  else
-      return activePlayer  
-}
-
 module.exports = Players
-module.exports.UpdatePlayer=UpdatePlayer

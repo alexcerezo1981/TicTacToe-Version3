@@ -1,70 +1,50 @@
 
-// const Game = require('./Game')
 const Board = require('./Board');
 const Player = require('./Player');
 const KeyPressed_Functions = require('./KeyPressed_Functions');
-const PC = require('./PC');
-
 
 
 function InitialiceTheGame(selectedOption){
     
     if (selectedOption==="1"){
-        huPC = ["Human", "Human"]
+        playerX = "Human"
+        playerO = "Human"
     }else if (selectedOption==="2"){
-        huPC = ["Human", "PC"]
+        playerX = "Human"
+        playerO = "PC"
     } else{
-        huPC = ["PC", "Human"]
+        playerX = "PC"
+        playerO = "Human"
     }
-    // Create new Players
-    nuPlayer = 2
-    naPlayer = ["X", "O"]
-    newPlayer = new Player(nuPlayer, naPlayer, huPC)
+ 
+    newPlayer = new Player(playerX, playerO)
     
 
-    // Create a new Board
     nuBoxes = 9
     newBoard = new Board(nuBoxes)
     Board.DisplayBoard (newBoard.grid)
     
-
-    // Display the player that Starts the Game
-
-    activePlayer=0
-
-    if (newPlayer.humanPC[activePlayer]==="Human"){
-        console.log("It's the turn for player " + newPlayer.namePlayers[activePlayer] + ".Press one of the numbers avialable (Press 'e' for Exit)")
-    }/*else {
-        console.log (newPlayer.humanPC[activePlayer])
-        console.log ("PC TURN se sale aqui?")
-        PC.miniMax(NewBoard.grid,newPlayer.namePlayers[activePlayer])
-        activePlayer=0                  //////////////////////////////////////////bORRAR//////////////////////
-
-    }*/
-
-}
-
-function winnerDraw(activeBoard,actualPlayer){
-    
-    Board.DisplayBoard (activeBoard)                                                            // Display the new board
-    if (KeyPressed_Functions.Winner(activeBoard)){                                              // Checking if we have a winner
-        console.log ("Player " + actualPlayer + " wins the game!!!")
-        process.exit()
+    activePlayer = playerX
+    activeMark = "X"
+    if (activePlayer==="Human"){
+        console.log("It's the turn for player X.Press one of the numbers avialable (Press 'e' for Exit)")
     }
-    if (KeyPressed_Functions.Draw(activeBoard)){                                                // Check if we have a draw game         
-        console.log ("This game ends on draw!")
-        process.exit()
-    } 
+    else {
+        var layer=0
+        var miniMaxResult = miniMax(newBoard.grid,activeMark,layer)
+        markBox(miniMaxResult.index)
+    }
 }
+
 
 function PlayAllGames(){
-    const readline = require('readline');                                                       // Readline lets us tap into the process events
-    readline.emitKeypressEvents(process.stdin);                                                 // Allows us to listen for events from stdin
-    process.stdin.setRawMode(true);                                                             // Raw mode gets rid of standard keypress events and other functionality Node.js adds by default
+    const readline = require('readline');                                                       
+    readline.emitKeypressEvents(process.stdin);                                                 
+    process.stdin.setRawMode(true);                                                            
     
-                                                                                 // Variable to controll if the game was initialize
+                                                                                 
 
-    console.clear()                                                                             // Menu to select who is going to play
+    console.clear()                                                                            
     console.log (" ") 
     console.log ("Tic Tac Toe Version 3.0 ") 
     console.log (" ")  
@@ -78,22 +58,14 @@ function PlayAllGames(){
     process.stdin.on('keypress', (str, key) => {
 
         if (firstMenu===false){         
-            if (newPlayer.humanPC[activePlayer]==="Human"){
-                if (KeyPressed_Functions.EndOfGame(key.sequence)){                                                  // Check if player wants to Exit the game
+            if (activePlayer==="Human"){
+                if (KeyPressed_Functions.EndOfGame(key.sequence)){                                                  
                     console.log ("You exited the game")                                   
                     process.exit()
                 }   
-                if (KeyPressed_Functions.ValidKey(key.sequence,newBoard.numberOfBoxes)){                            // Check if player pressed an valid key                                                           
-                    if (KeyPressed_Functions.NotInUse(key.sequence,newBoard.grid[key.sequence-1].toString())){      // Check if the box is already in use
-
-
-                        ////////////////////////////////////////////////////////////////////////////////////////////
-                        newBoard.grid =["X",2,"O","O",5,"O",7,"X","X"]
-                        //newBoard.grid [key.sequence-1]=newPlayer.namePlayers[activePlayer]                          // Update the board and display it
-                        winnerDraw(newBoard.grid,newPlayer.namePlayers[activePlayer])                               // Check if we have a winner or it's draw
-                        activePlayer = Player.UpdatePlayer(activePlayer,newPlayer.numberOfPlayers)                  // Change the active player and display it
- 
-                        console.log("It's the turn for player " + newPlayer.namePlayers[activePlayer] + ". Press one of the numbers avialable (Press 'e' for Exit)")                                                      
+                if (KeyPressed_Functions.ValidKey(key.sequence,newBoard.numberOfBoxes)){                                                                                      
+                    if (key.sequence.toString()===newBoard.grid[key.sequence].toString()){                          // We check if the selected box is already in use
+                        markBox(key.sequence)                                             
                     }else{
                         console.log ("This box is already in use, please select another one")
                     }
@@ -103,27 +75,11 @@ function PlayAllGames(){
                 }
             }
 
-            if (newPlayer.humanPC[activePlayer]==="PC"){
+            if (activePlayer==="PC"){
                 
                 var layer=0
-                var PCplayer=["PC", newPlayer.namePlayers[activePlayer]]
-                
-                console.log (newBoard.grid)
-                console.log (PCplayer)
-                console.log (layer)
-                console.log ("----------------------------EMPIEZA MINIMAX---------------------------------------")
-                var A = PC.miniMax(newBoard.grid,PCplayer, layer,maximizing=true).index
-                process.exit()
-                console.log ("Esto es el resultado del Minimax: " + A)
-                console.log ("Esto es ANTES de hacer el update del minimax ")
-                console.log (newBoard.grid)
-                newBoard.grid [A-1]=newPlayer.namePlayers[activePlayer]    // Update the board and display it
-                console.log ("Esto es despues de hacer el update del minimax ")
-                console.log (newBoard.grid)
-                winnerDraw(newBoard.grid,newPlayer.namePlayers[activePlayer])                                   // Check if we have a winner or it's draw
-                activePlayer = Player.UpdatePlayer(activePlayer,newPlayer.numberOfPlayers)                      // Change the active player and display it
-
-                console.log("It's the turn for player " + newPlayer.namePlayers[activePlayer] + ". Press one of the numbers avialable (Press 'e' for Exit)")
+                var miniMaxResult = miniMax(newBoard.grid,activeMark,layer)
+                markBox(miniMaxResult.index)
             }
         }        
         
@@ -132,7 +88,6 @@ function PlayAllGames(){
             if (selectedOption==="1" || selectedOption==="2" || selectedOption==="3"){
                 firstMenu=false
                 InitialiceTheGame(selectedOption)
-                activePlayer=0
             }
             
             
@@ -140,9 +95,88 @@ function PlayAllGames(){
     })
 }
 
+function miniMax(boardmM, activeMarkmM,layer){
+    layer++
+ 
+    var availSpots= Board.findEmptySpace(boardmM)
+
+    if (KeyPressed_Functions.Winner(boardmM)){       
+        if (activeMarkmM !== activeMark){
+            score = 100 - layer
+            return {score: score}
+        }
+        else{
+            score = -100 + layer
+            return {score: score}
+        }
+
+    }else if (availSpots.length ===0){
+        return {score: 0}
+    }
+  
+    var moves = []
+
+    for (var i = 0; i< availSpots.length;i++){
+        var move ={}
+        move.index = boardmM[availSpots[i]]
+        boardmM[availSpots[i]] = activeMarkmM
+        if (activeMarkmM === "X"){
+            var result = miniMax(boardmM,"O",layer)
+            move.score = result.score
+        }else{
+            var result = miniMax(boardmM,"X",layer)
+            move.score = result.score
+        }
+        boardmM[availSpots[i]] = move.index
+        moves.push(move)
+    }
+
+    var bestMove
+    if (activeMarkmM ===activeMark)
+    {
+        var bestScore = -10000
+        for (var i =0; i < moves.length; i++){
+            if (moves[i].score > bestScore){
+                bestScore = moves[i].score
+                bestMove = i
+            }
+        }
+    }else{
+        var bestScore = 10000
+        for (var i =0; i < moves.length; i++){
+            if (moves[i].score < bestScore){
+                bestScore = moves[i].score
+                bestMove = i
+            }
+        }
+    }
+    return moves [bestMove]
+      
+  }
+
+  function markBox(boxToMark){
+    newBoard.grid [boxToMark]=activeMark                                                 
+    Board.DisplayBoard (newBoard.grid)                                                            
+    if (KeyPressed_Functions.Winner(newBoard.grid)){                                              
+        console.log ("Player " + activeMark + " wins the game!!!")
+        process.exit()
+    }
+    if (KeyPressed_Functions.Draw(newBoard.grid)){                                                        
+        console.log ("This game ends on draw!")
+        process.exit()
+            }                                
+    if (activeMark === "X"){
+        activePlayer = playerO
+        activeMark = "O"
+    }else{
+        activePlayer = playerX
+        activeMark = "X"
+    } 
+    console.log("It's the turn for player " + activeMark + ". Press one of the numbers avialable (Press 'e' for Exit)")  
+  }
+
 
 
 var firstMenu=true 
 PlayAllGames()
 
-module.exports.winnerDraw=winnerDraw
