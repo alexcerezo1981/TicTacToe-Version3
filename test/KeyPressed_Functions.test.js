@@ -32,20 +32,6 @@ describe('EndGameFunctions', () => {
       expect(InGame).to.eql(false)   
     });
 
-    it('Player selected a Box ALREADY in use', () => {
-      let PressedKey= "1"
-      let CellSelected = "X"
-      let InUse = EndGameFunctions.NotInUse(PressedKey,CellSelected)
-      expect(InUse).to.eql(false)   
-    });
-
-    it('Player selected a Box NOT in use', () => {
-      let PressedKey= "2"
-      let CellSelected = "2"
-      let InUse = EndGameFunctions.NotInUse(PressedKey,CellSelected)
-      expect(InUse).to.eql(true)   
-    });
-
     const Winner_Combination = [       
       [0,1,2],
       [3,4,5],
@@ -112,7 +98,7 @@ describe('EndGameFunctions', () => {
   })
 
   it ('Test if the game is NOT Draw', function(){
-    let BoardGame=["X","X","O","O","O","X","X","O",9]
+    let BoardGame=["X","X","O","O","O","X","X","O",8]
     let N_Boxes=9
 
     expect (EndGameFunctions.Draw(BoardGame,N_Boxes)).to.eql(false) 

@@ -7,8 +7,8 @@ describe('Board', () => {
     let NumberOfBoxes=9
     let board = new Board(NumberOfBoxes);
 
-    expect(board.grid).to.eql([1,2,3,4,5,6,7,8,9]);
-    expect(board.N_Boxes).to.eql(9);
+    expect(board.grid).to.eql([0,1,2,3,4,5,6,7,8]);
+    expect(board.numberOfBoxes).to.eql(9);
   
   });
 

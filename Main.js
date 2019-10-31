@@ -2,6 +2,7 @@
 const Board = require('./Board');
 const Player = require('./Player');
 const KeyPressed_Functions = require('./KeyPressed_Functions');
+const MiniMax = require('./MiniMax');
 
 
 function InitialiceTheGame(selectedOption){
@@ -31,7 +32,7 @@ function InitialiceTheGame(selectedOption){
     }
     else {
         var layer=0
-        var miniMaxResult = miniMax(newBoard.grid,activeMark,layer)
+        var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark,activeMark,layer)
         markBox(miniMaxResult.index)
     }
 }
@@ -78,7 +79,7 @@ function PlayAllGames(){
             if (activePlayer==="PC"){
                 
                 var layer=0
-                var miniMaxResult = miniMax(newBoard.grid,activeMark,layer)
+                var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark,activeMark,layer)
                 markBox(miniMaxResult.index)
             }
         }        
@@ -94,65 +95,6 @@ function PlayAllGames(){
         }
     })
 }
-
-function miniMax(boardmM, activeMarkmM,layer){
-    layer++
- 
-    var availSpots= Board.findEmptySpace(boardmM)
-
-    if (KeyPressed_Functions.Winner(boardmM)){       
-        if (activeMarkmM !== activeMark){
-            score = 100 - layer
-            return {score: score}
-        }
-        else{
-            score = -100 + layer
-            return {score: score}
-        }
-
-    }else if (availSpots.length ===0){
-        return {score: 0}
-    }
-  
-    var moves = []
-
-    for (var i = 0; i< availSpots.length;i++){
-        var move ={}
-        move.index = boardmM[availSpots[i]]
-        boardmM[availSpots[i]] = activeMarkmM
-        if (activeMarkmM === "X"){
-            var result = miniMax(boardmM,"O",layer)
-            move.score = result.score
-        }else{
-            var result = miniMax(boardmM,"X",layer)
-            move.score = result.score
-        }
-        boardmM[availSpots[i]] = move.index
-        moves.push(move)
-    }
-
-    var bestMove
-    if (activeMarkmM ===activeMark)
-    {
-        var bestScore = -10000
-        for (var i =0; i < moves.length; i++){
-            if (moves[i].score > bestScore){
-                bestScore = moves[i].score
-                bestMove = i
-            }
-        }
-    }else{
-        var bestScore = 10000
-        for (var i =0; i < moves.length; i++){
-            if (moves[i].score < bestScore){
-                bestScore = moves[i].score
-                bestMove = i
-            }
-        }
-    }
-    return moves [bestMove]
-      
-  }
 
   function markBox(boxToMark){
     newBoard.grid [boxToMark]=activeMark                                                 
