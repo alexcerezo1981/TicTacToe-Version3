@@ -31,8 +31,7 @@ function InitialiceTheGame(selectedOption){
         console.log("It's the turn for player X.Press one of the numbers avialable (Press 'e' for Exit)")
     }
     else {
-        var layer=0
-        var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark,activeMark,layer)
+        var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark)
         markBox(miniMaxResult.index)
     }
 }
@@ -77,9 +76,7 @@ function PlayAllGames(){
             }
 
             if (activePlayer==="PC"){
-                
-                var layer=0
-                var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark,activeMark,layer)
+                var miniMaxResult = MiniMax.miniMax(newBoard.grid,activeMark)
                 markBox(miniMaxResult.index)
             }
         }        

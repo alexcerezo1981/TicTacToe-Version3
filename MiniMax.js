@@ -1,11 +1,17 @@
 const Board = require('./Board');
 const KeyPressed_Functions = require('./KeyPressed_Functions');
 
-function miniMax(boardmM, activePlayerOnGame, activeMarkmM,layer){
-    layer++
-    activeMark
-    var availSpots= Board.findEmptySpace(boardmM)
+function miniMax(boardmM, activePlayerOnGame){
+    layer = 0
+    return innerMiniMax(boardmM, activePlayerOnGame,layer)
+}
 
+function innerMiniMax(boardmM, activePlayerOnGame,layer){
+
+    layer++
+    var availSpots= Board.findEmptySpace(boardmM)
+    availSpots.length % 2 === 0 ? activeMarkmM = "O" : activeMarkmM = "X"
+ 
     if (KeyPressed_Functions.Winner(boardmM)){       
         if (activeMarkmM !== activePlayerOnGame){
             score = 100 - layer
@@ -19,20 +25,15 @@ function miniMax(boardmM, activePlayerOnGame, activeMarkmM,layer){
     }else if (availSpots.length ===0){
         return {score: 0}
     }
-  
-    var moves = []
-
+    
+    var moves = []    
     for (var i = 0; i< availSpots.length;i++){
-        var move ={}
+         var move ={}
         move.index = boardmM[availSpots[i]]
         boardmM[availSpots[i]] = activeMarkmM
-        if (activeMarkmM === "X"){
-            var result = miniMax(boardmM,activePlayerOnGame,"O",layer)
-            move.score = result.score
-        }else{
-            var result = miniMax(boardmM,activePlayerOnGame,"X",layer)
-            move.score = result.score
-        }
+        var result = innerMiniMax(boardmM,activePlayerOnGame, layer)
+        availSpots.length % 2 === 0 ? activeMarkmM = "O" : activeMarkmM = "X"
+        move.score = result.score
         boardmM[availSpots[i]] = move.index
         moves.push(move)
     }
